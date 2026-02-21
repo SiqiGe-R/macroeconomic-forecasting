@@ -32,7 +32,7 @@ library(readr)
 # Data Import & Initial Target Variable Preparation 
 
 # Define the file path for the FRED-MD database.
-filepath <- "C:/Users/asus/Desktop/2025-09-md.csv" 
+filepath <- "2025-09-MD.csv"
 
 # handles missing values, and applies the required stationary transformations.
 X.raw <- fredmd(
@@ -1062,6 +1062,7 @@ The analysis then evaluates out-of-sample forecasting performance by comparing a
 The analysis further investigates whether these conclusions are sensitive to factor dimensionality and to temporal instability. Although Bai and Ng information criteria favor relatively large numbers of factors, the scree plot suggests that the dominant common variation is concentrated in the first few components. Consistent with this diagnostic, expanding the factor dimension does not yield forecast gains and can worsen performance, consistent with overfitting. Moreover, subsample analysis reveals pronounced time variation: diffusion index forecasts perform relatively well prior to 2010 but deteriorate sharply thereafter, indicating that instability in the factor–target relationship is an important limitation for factor-based forecasting in this setting.
 
 Beyond the baseline evaluation, several extensions could be considered to further probe robustness without altering the central findings. First, alternative loss functions and accuracy measures (e.g., MAE or other robust criteria) could be used to assess whether model rankings depend on the choice of quadratic loss. Second, longer-horizon forecasts (e.g., h=36 or h=48) could be explored, since factor-based models are sometimes argued to be more informative at low frequencies; however, the lack of relative improvement at h=24 and the reduced effective sample size at longer horizons suggest limited scope for a reversal in this application. Third, regularization methods such as LASSO could provide a principled way to control dimensionality by shrinking uninformative lagged factors toward zero, offering a compromise between information extraction and parsimony. Finally, modest refinements to the autoregressive benchmark—such as data-driven lag selection or alternative window lengths—could be used as additional robustness checks. While these extensions lie beyond the scope of the present analysis, they clarify that the main conclusions are not driven by a single modelling choice but reflect a broader empirical pattern: for the target variable considered, forecast performance is strongly influenced by estimation uncertainty and by time variation in predictive relationships, and a parsimonious autoregressive specification provides the most reliable performance over the full evaluation period.
+
 
 
 
