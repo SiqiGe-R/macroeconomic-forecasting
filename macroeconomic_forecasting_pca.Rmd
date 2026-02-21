@@ -119,8 +119,7 @@ var.exclude <- intersect(names(X.clean), var.exclude)
 X <- X.clean %>% select(-all_of(var.exclude))
 ```
 
-Question 1
-1(a) Static factor model 
+## Static Factor Model Framework
 
 Assume that the vector of observed macroeconomic variables x_t follows a static factor model:
 x_t = Lambda * f_t + e_t, where x_t is an N x 1 vector of observed macroeconomic variables; f_t is an r x 1 vector of unobserved common factors; Lambda is an N x r matrix of factor loadings; e_t is an N x 1 vector of idiosyncratic error terms.
@@ -135,7 +134,7 @@ The key assumption of the static factor model is that a small number of common f
 
 
 
-1(b) Interpretation of Factors and Idiosyncratic Errors.
+## Interpretation of Common Factors and Idiosyncratic Errors
 
 The common factors (f_t) represent the latent, underlying sources of macroeconomic co-movement. Economically, they summarize aggregate economic conditions, such as the general level of activity, inflation expectations, or business cycle fluctuations, that simultaneously affect many different variables. Statistically, they function as an effective low-dimensional summary of the N-dimensional information set, condensing the complex, collective movement of the entire economy into a few interpretable components.
 
@@ -179,7 +178,7 @@ print("Estimated Factors (f_t_hat) Head:")
 print(head(f_t_hat))        # Inspect the first few observations of the 8 estimated factors.
 
 ```
-Question 2 
+## PCA Factor Estimation and Diffusion Index Construction
 
 An eight-factor static factor model is estimated using the Principal Components Analysis (PCA) method over the full sample period from 1961.01 to 2019.12. Prior to factor extraction, the data x_t are standardized by centering each series to zero mean and scaling it to unit variance. This step ensures that the estimation of the factors is not dominated by variables with larger natural scales.
 
@@ -265,9 +264,9 @@ plot_R2 <- ggplot(R2_df, aes(x = Index, y = R2)) +
 print(plot_R2)
 
 ```
-Question 3 
 
-1. Explanatory Power of the Estimated Factors
+
+## Explanatory Power of the Estimated Factors
 
 To assess the explanatory power of the estimated common factors, each standardized macroeconomic variable is regressed on the eight estimated factors over the full sample period. For each variable, the coefficient of determination (R²) measures the proportion of its variation explained by the common factors.
 
@@ -329,14 +328,14 @@ F8_cum_prop <- variance_df$Cumulative_Variance[n_factors] * 100
 print(F8_cum_prop)
 
 ```
-2. Cumulative Variance Explained by the Factors
+## Cumulative Variance Explained by the Factors
 
 Additional insight into the factor structure is obtained by examining the cumulative proportion of variance explained by the principal components. Figure 3.2 illustrates this measure. The first factor alone explains approximately 17.18% of the total variance, reflecting a dominant aggregate economic force. As additional factors are included, the cumulative variance explained increases steadily.
 
 Using eight factors, the cumulative proportion of variance explained reaches approximately 48.60%. This indicates that a relatively small number of factors captures a substantial share of the systematic variation in the high-dimensional dataset. The result highlights the effectiveness of the factor model as a dimensionality-reduction tool and supports its use in subsequent diffusion index analysis.
 
 ```{r}
-## Part B: Rolling Window Forecasting and Diffusion Index Model Comparison
+## Rolling Window Forecasting and Diffusion Index Model Comparison
 
 #Initialization of Loop Parameters and Storage
 N.loops <- 16 * 12 + 1      # Number of loops for the out-of-sample forecast initiation
@@ -588,7 +587,7 @@ results <- data.frame(
 
 print(results)
 ```
-Question 4 
+## Forecast Accuracy Evaluation
 
 Forecast accuracy is evaluated using mean squared forecast errors (MSFE), consistent with the quadratic loss function commonly adopted in the diffusion index literature (e.g. Stock and Watson, 2002; Bai and Ng, 2008). While alternative loss functions could be considered, MSFE provides a natural benchmark for comparing factor-augmented and autoregressive models in this setting.
 
@@ -602,8 +601,7 @@ Finally, the factor estimates themselves may contain limited incremental informa
 
 
 
-
-Question 5
+## Comparison with Stock and Watson (2002) and Conclusion
 
 The out-of-sample forecasting results obtained in this project can be meaningfully compared with those reported by Stock and Watson (2002) in their Tables 1 and 2. In those tables, Stock and Watson evaluate diffusion index forecasts for a range of U.S. macroeconomic variables and show that factor-augmented models often outperform simple autoregressive benchmarks, particularly at medium- to long-term forecast horizons. However, they also emphasize that the gains from diffusion index models are heterogeneous across variables and horizons, and that improvements are not universal.
 
@@ -615,7 +613,7 @@ Overall, the comparison suggests that the results of this project do not contrad
 
 
 ```{r}
-# PART C: DETERMINING THE OPTIMAL NUMBER OF FACTORS (r) 
+# DETERMINING THE OPTIMAL NUMBER OF FACTORS (r) 
 # Based on the Information Criteria (IC) proposed by Bai and Ng (2002).
 
 # Load the cleaned data matrix.
@@ -748,7 +746,7 @@ Taken together, the scree plot and the information criteria do not point to a un
 In the following section, the forecasting performance of a five-factor diffusion index model is therefore examined and compared with that of the baseline four-factor specification.
 
 ```{r}
-## Part C: Diffusion Index (DI) model with 5 factors 
+## Diffusion Index (DI) model with 5 factors 
 # A robustness check using the factor number suggested by IC1/IC2.
 
 # Assuming 'obs', 't.1', and 'T.seq' were defined globally or in Part B.
@@ -951,7 +949,7 @@ Forecasting Performance with Five Factors
 
 This section extends the forecasting analysis by examining whether the out-of-sample results are sensitive to the number of factors included in the diffusion index (DI) model. In particular, it evaluates whether increasing the factor dimension beyond the baseline four-factor specification leads to improved forecast accuracy.
 
-As discussed in Part C, the information criteria proposed by Bai and Ng (2002) provide mixed guidance on the appropriate factor dimension. While IC1 and IC2 suggest five factors and IC3 suggests a larger specification, the scree plot indicates that the dominant common variation in the data is concentrated in the first few factors, with diminishing marginal contributions beyond the fourth factor. Motivated by these diagnostics, an alternative diffusion index model with five factors is estimated and evaluated within the same rolling forecasting framework as in Part B.
+As discussed before, the information criteria proposed by Bai and Ng (2002) provide mixed guidance on the appropriate factor dimension. While IC1 and IC2 suggest five factors and IC3 suggests a larger specification, the scree plot indicates that the dominant common variation in the data is concentrated in the first few factors, with diminishing marginal contributions beyond the fourth factor. Motivated by these diagnostics, an alternative diffusion index model with five factors is estimated and evaluated within the same rolling forecasting framework as in Part B.
 
 Forecast accuracy is assessed using mean squared forecast errors (MSFE) and compared to both the autoregressive benchmark and the four-factor diffusion index model. The results show that the five-factor diffusion index model performs worse than the AR(6) benchmark across all forecast horizons. Relative MSFE values exceed one for all horizons, indicating that augmenting the autoregressive model with five factors leads to forecast errors between approximately 5% and 14% higher than those of the AR(6) model.
 
@@ -963,7 +961,7 @@ Taken together, the comparison across models highlights a clear ranking in forec
 
 
 ```{r}
-# Part C: Sub-sample Stability Check (Robust Version)
+# Sub-sample Stability Check (Robust Version)
 # Purpose: Assess if the DI model's relative performance vs. AR(6) is consistent across different economic periods (Pre-2010 vs. Post-2010).
 
 # Ensure 'dates' variable is in Date format
@@ -1043,13 +1041,13 @@ Overall, the subsample analysis demonstrates that the forecasting performance of
 
 
 
-Part C Conclusion
+## Conclusion
 
-Overall, the analysis in Part C shows that the forecasting performance of diffusion index models is highly sensitive to both factor dimensionality and time variation. Although the information criteria proposed by Bai and Ng (2002) favor relatively large factor specifications, evidence from the scree plot suggests that the dominant common variation in the data is captured by a small number of factors.
+Overall, the analysis shows that the forecasting performance of diffusion index models is highly sensitive to both factor dimensionality and time variation. Although the information criteria proposed by Bai and Ng (2002) favor relatively large factor specifications, evidence from the scree plot suggests that the dominant common variation in the data is captured by a small number of factors.
 
 Out-of-sample forecasting results indicate that increasing the number of factors beyond the four-factor baseline does not improve predictive performance and, in fact, leads to a deterioration in forecast accuracy, consistent with overfitting and increased estimation uncertainty. Moreover, the subsample analysis reveals pronounced time variation in performance, with the diffusion index model performing favorably prior to 2010 but deteriorating sharply thereafter.
 
-Taken together, the findings in Part C highlight the importance of aligning factor selection with forecasting objectives and underscore that factor-based models are not only sensitive to model dimensionality but also to instability in predictive relationships over time. These results reinforce the role of parsimony and robustness considerations when implementing diffusion index forecasting models in practice.
+Taken together, the findings highlight the importance of aligning factor selection with forecasting objectives and underscore that factor-based models are not only sensitive to model dimensionality but also to instability in predictive relationships over time. These results reinforce the role of parsimony and robustness considerations when implementing diffusion index forecasting models in practice.
 
 
 
@@ -1057,13 +1055,14 @@ Project Conclusion
 
 This project examines the empirical performance of diffusion index forecasting models within a large macroeconomic dataset, with particular attention to factor estimation, factor dimensionality, and forecast robustness. Building on the static factor model framework of Stock and Watson (2002) and Bai and Ng (2002, 2008), the analysis evaluates whether augmenting a standard autoregressive benchmark with estimated common factors improves out-of-sample forecast accuracy for the target variable.
 
-Part A establishes the theoretical foundation of the static factor model, emphasizing how a small number of latent factors can summarize the co-movement across a high-dimensional macroeconomic panel. Using principal components methods, the extracted factors exhibit substantial explanatory power for many individual series, supporting the relevance of a low-dimensional common component as a descriptive representation of the data.
+The analysis first establishes the theoretical foundation of the static factor model, emphasizing how a small number of latent factors can summarize the co-movement across a high-dimensional macroeconomic panel. Using principal components methods, the extracted factors exhibit substantial explanatory power for many individual series, supporting the relevance of a low-dimensional common component as a descriptive representation of the data.
 
-Part B evaluates out-of-sample forecasting performance by comparing an AR(6) benchmark with diffusion index specifications at horizons h=6,12,24. Forecast accuracy is assessed using mean squared forecast errors (MSFE), consistent with a quadratic loss function that is standard in the diffusion index literature. Over the full out-of-sample period, the factor-augmented models do not outperform the autoregressive benchmark, indicating that—conditional on the target’s own lag dynamics—the estimated factors provide limited incremental predictive content in this application. The results are consistent with a trade-off highlighted in Bai and Ng’s framework: while factors can summarize broad information, adding many regressors can increase estimation uncertainty and weaken out-of-sample performance when the marginal predictive signal is small.
+The analysis then evaluates out-of-sample forecasting performance by comparing an AR(6) benchmark with diffusion index specifications at horizons h=6,12,24. Forecast accuracy is assessed using mean squared forecast errors (MSFE), consistent with a quadratic loss function that is standard in the diffusion index literature. Over the full out-of-sample period, the factor-augmented models do not outperform the autoregressive benchmark, indicating that—conditional on the target’s own lag dynamics—the estimated factors provide limited incremental predictive content in this application. The results are consistent with a trade-off highlighted in Bai and Ng’s framework: while factors can summarize broad information, adding many regressors can increase estimation uncertainty and weaken out-of-sample performance when the marginal predictive signal is small.
 
-Part C investigates whether these conclusions are sensitive to factor dimensionality and to temporal instability. Although Bai and Ng information criteria favor relatively large numbers of factors, the scree plot suggests that the dominant common variation is concentrated in the first few components. Consistent with this diagnostic, expanding the factor dimension does not yield forecast gains and can worsen performance, consistent with overfitting. Moreover, subsample analysis reveals pronounced time variation: diffusion index forecasts perform relatively well prior to 2010 but deteriorate sharply thereafter, indicating that instability in the factor–target relationship is an important limitation for factor-based forecasting in this setting.
+The analysis further investigates whether these conclusions are sensitive to factor dimensionality and to temporal instability. Although Bai and Ng information criteria favor relatively large numbers of factors, the scree plot suggests that the dominant common variation is concentrated in the first few components. Consistent with this diagnostic, expanding the factor dimension does not yield forecast gains and can worsen performance, consistent with overfitting. Moreover, subsample analysis reveals pronounced time variation: diffusion index forecasts perform relatively well prior to 2010 but deteriorate sharply thereafter, indicating that instability in the factor–target relationship is an important limitation for factor-based forecasting in this setting.
 
 Beyond the baseline evaluation, several extensions could be considered to further probe robustness without altering the central findings. First, alternative loss functions and accuracy measures (e.g., MAE or other robust criteria) could be used to assess whether model rankings depend on the choice of quadratic loss. Second, longer-horizon forecasts (e.g., h=36 or h=48) could be explored, since factor-based models are sometimes argued to be more informative at low frequencies; however, the lack of relative improvement at h=24 and the reduced effective sample size at longer horizons suggest limited scope for a reversal in this application. Third, regularization methods such as LASSO could provide a principled way to control dimensionality by shrinking uninformative lagged factors toward zero, offering a compromise between information extraction and parsimony. Finally, modest refinements to the autoregressive benchmark—such as data-driven lag selection or alternative window lengths—could be used as additional robustness checks. While these extensions lie beyond the scope of the present analysis, they clarify that the main conclusions are not driven by a single modelling choice but reflect a broader empirical pattern: for the target variable considered, forecast performance is strongly influenced by estimation uncertainty and by time variation in predictive relationships, and a parsimonious autoregressive specification provides the most reliable performance over the full evaluation period.
+
 
 
 
