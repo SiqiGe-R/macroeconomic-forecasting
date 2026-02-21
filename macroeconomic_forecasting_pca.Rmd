@@ -689,7 +689,7 @@ The number of factors in a static factor model is not known a priori. While the 
 
 To address this issue, the information criteria proposed by Bai and Ng (2002) are computed using the full sample. These criteria provide data-driven guidance on the factor dimension by balancing model fit against parsimony. The results indicate some dispersion across the criteria: IC1 and IC2 suggest five factors, while IC3 suggests a larger specification with eight factors. Such variation across criteria is common in empirical applications and reflects the trade-off inherent in factor model selection.
 
-Given the forecasting focus of this exercise and the evidence from Part B that adding more predictors does not necessarily improve short- and medium-horizon forecast accuracy, the four-factor specification is maintained as the baseline for the empirical analysis. Specifications with a larger number of factors are examined subsequently to assess whether alternative factor dimensions provide incremental benefits.
+Given the forecasting focus of this exercise and the evidence that adding more predictors does not necessarily improve short- and medium-horizon forecast accuracy, the four-factor specification is maintained as the baseline for the empirical analysis. Specifications with a larger number of factors are examined subsequently to assess whether alternative factor dimensions provide incremental benefits.
 
 Finally, it should be noted that the information criteria are computed using the full sample and are therefore intended to provide indicative guidance on factor dimensionality rather than to determine a forecasting-optimal choice.
 
@@ -716,7 +716,7 @@ plot(
 )
 
 
-# Mark the baseline four-factor specification used in Part B for reference.
+# Mark the baseline four-factor specification used in the baseline model for reference.
 abline(v = 4, lty = 2, col = "red")
 
 ```
@@ -749,7 +749,7 @@ In the following section, the forecasting performance of a five-factor diffusion
 ## Diffusion Index (DI) model with 5 factors 
 # A robustness check using the factor number suggested by IC1/IC2.
 
-# Assuming 'obs', 't.1', and 'T.seq' were defined globally or in Part B.
+# Assuming 'obs', 't.1', and 'T.seq' were defined globally.
 obs_DI5 <- obs           # Total number of observations (rows in y, X)
 t.1_DI5 <- t.1           # First observation index used for forecasting (end of initial estimation sample)
 T.seq_DI5 <- 492:684     # Sequence of final observation indices (T) for the rolling window
@@ -760,7 +760,7 @@ r_DI5 <- 5
 # Define the number of factor lags (p) (Assuming p=4, L0 to L3)
 p_DI5 <- 4
 
-# Storage (Separate from Part B) 
+# Storage 
 # Store forecast values (y.hat) and Mean Squared Errors (mse) for the AR(6) and DI(5) models
 y.hat.h6_DI5 <- matrix(NA, obs_DI5, nmod_DI5)
 y.hat.h12_DI5 <- matrix(NA, obs_DI5, nmod_DI5)
@@ -791,7 +791,7 @@ for (T in T.seq_DI5) {
 
     # Print progress occasionally
     if (count_DI5 %% 25 == 1) {
-        print(paste("Part C DI(5) - Sample", count_DI5, "T =", dates[T]))
+        print(paste("DI(5) forecasting - Sample", count_DI5, "T =", dates[T]))
     }
     count_DI5 <- count_DI5 + 1
     
@@ -949,7 +949,7 @@ Forecasting Performance with Five Factors
 
 This section extends the forecasting analysis by examining whether the out-of-sample results are sensitive to the number of factors included in the diffusion index (DI) model. In particular, it evaluates whether increasing the factor dimension beyond the baseline four-factor specification leads to improved forecast accuracy.
 
-As discussed before, the information criteria proposed by Bai and Ng (2002) provide mixed guidance on the appropriate factor dimension. While IC1 and IC2 suggest five factors and IC3 suggests a larger specification, the scree plot indicates that the dominant common variation in the data is concentrated in the first few factors, with diminishing marginal contributions beyond the fourth factor. Motivated by these diagnostics, an alternative diffusion index model with five factors is estimated and evaluated within the same rolling forecasting framework as in Part B.
+As discussed before, the information criteria proposed by Bai and Ng (2002) provide mixed guidance on the appropriate factor dimension. While IC1 and IC2 suggest five factors and IC3 suggests a larger specification, the scree plot indicates that the dominant common variation in the data is concentrated in the first few factors, with diminishing marginal contributions beyond the fourth factor. Motivated by these diagnostics, an alternative diffusion index model with five factors is estimated and evaluated within the same rolling forecasting framework as in the baseline specification.
 
 Forecast accuracy is assessed using mean squared forecast errors (MSFE) and compared to both the autoregressive benchmark and the four-factor diffusion index model. The results show that the five-factor diffusion index model performs worse than the AR(6) benchmark across all forecast horizons. Relative MSFE values exceed one for all horizons, indicating that augmenting the autoregressive model with five factors leads to forecast errors between approximately 5% and 14% higher than those of the AR(6) model.
 
@@ -1062,6 +1062,7 @@ The analysis then evaluates out-of-sample forecasting performance by comparing a
 The analysis further investigates whether these conclusions are sensitive to factor dimensionality and to temporal instability. Although Bai and Ng information criteria favor relatively large numbers of factors, the scree plot suggests that the dominant common variation is concentrated in the first few components. Consistent with this diagnostic, expanding the factor dimension does not yield forecast gains and can worsen performance, consistent with overfitting. Moreover, subsample analysis reveals pronounced time variation: diffusion index forecasts perform relatively well prior to 2010 but deteriorate sharply thereafter, indicating that instability in the factor–target relationship is an important limitation for factor-based forecasting in this setting.
 
 Beyond the baseline evaluation, several extensions could be considered to further probe robustness without altering the central findings. First, alternative loss functions and accuracy measures (e.g., MAE or other robust criteria) could be used to assess whether model rankings depend on the choice of quadratic loss. Second, longer-horizon forecasts (e.g., h=36 or h=48) could be explored, since factor-based models are sometimes argued to be more informative at low frequencies; however, the lack of relative improvement at h=24 and the reduced effective sample size at longer horizons suggest limited scope for a reversal in this application. Third, regularization methods such as LASSO could provide a principled way to control dimensionality by shrinking uninformative lagged factors toward zero, offering a compromise between information extraction and parsimony. Finally, modest refinements to the autoregressive benchmark—such as data-driven lag selection or alternative window lengths—could be used as additional robustness checks. While these extensions lie beyond the scope of the present analysis, they clarify that the main conclusions are not driven by a single modelling choice but reflect a broader empirical pattern: for the target variable considered, forecast performance is strongly influenced by estimation uncertainty and by time variation in predictive relationships, and a parsimonious autoregressive specification provides the most reliable performance over the full evaluation period.
+
 
 
 
