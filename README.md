@@ -1,36 +1,55 @@
-# Macroeconomic Forecasting using PCA and Time Series Analysis
+# Macroeconomic Forecasting using PCA and Time Series Models
 
-## Overview
+## Project Overview
 
-This project applies econometric and statistical techniques to analyse and forecast macroeconomic variables using high-dimensional macroeconomic data.
+This project builds a macroeconomic forecasting model using Principal Component Analysis (PCA) and diffusion index methodology on high-dimensional macroeconomic data from the FRED-MD database.
 
-The analysis focuses on dimensionality reduction and forecasting using Principal Component Analysis (PCA) and time series methods.
+The objective is to evaluate whether factor-based models improve forecast accuracy compared to traditional autoregressive models.
 
-## Methods Used
+---
 
-- Principal Component Analysis (PCA)
-- Time Series Analysis
-- Stationarity Testing (ADF test)
-- Forecasting models
-- Data preprocessing and transformation
+## Dataset
 
-## Tools and Technologies
+- Source: Federal Reserve Economic Data (FRED-MD)
+- Number of variables: 120+
+- Time period: 1961–2019
+- Frequency: Monthly
 
-- R
-- tidyverse
-- ggplot2
-- forecast
-- tseries
+---
 
-## Skills Demonstrated
+## Methods
 
-- Econometric modelling
-- Macroeconomic data analysis
+- PCA factor extraction
+- Static factor model
+- Rolling window forecasting
+- Diffusion Index model
+- AR(6) benchmark model
+- Out-of-sample evaluation
+
+---
+
+## Results
+
+Key findings:
+
+- PCA factors explain ~48% of total variation
+- Diffusion index models do not outperform AR benchmark
+- Factor models show instability post-2010
+
+---
+
+## Skills demonstrated
+
 - Time series forecasting
+- Econometric modelling
 - Dimensionality reduction
-- Statistical programming in R
+- Rolling window backtesting
+- Data preprocessing in R
+
+---
 
 ## Author
 
+Siqi Ge  
 MSc Economics and Data Science  
 University of Manchester
